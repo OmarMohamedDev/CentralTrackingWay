@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.omohamed.centraltrackingway"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -24,8 +24,16 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
-    //Dependecies for Firebase authentication
-    compile 'com.google.firebase:firebase-auth:9.2.1'
+
+    /*IMPORTANT: Check always that the dependecies of Firebase or google play services are of the
+    * right version
+    */
+    // Single target that includes all FirebaseUI libraries
+    compile 'com.firebaseui:firebase-ui:0.4.3'
+    // FirebaseUI Database only
+    compile 'com.firebaseui:firebase-ui-database:0.4.3'
+    // FirebaseUI Auth only
+    compile 'com.firebaseui:firebase-ui-auth:0.4.3'
 }
 
 //Google service plugin for Firebase integration
