@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "465209077738",
+    "firebase_url": "https://centraltrackingway.firebaseio.com",
+    "project_id": "centraltrackingway",
+    "storage_bucket": "centraltrackingway.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465209077738:android:c5bdcea275abde65",
+        "android_client_info": {
+          "package_name": "com.omohamed.centraltrackingway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465209077738-4d95udi6l2grfet304mnc912h0iu7e8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDvrfHWMm2v5kGJ7f0b-tgtzoG-nXWY9A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
