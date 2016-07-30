@@ -48,6 +48,14 @@
     <string name="expenses">Expenses</string>
     <string name="account_options">Account Options</string>
     <string name="icon">Icon</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_amount">Amount</string>
+    <string name="hint_date">Date</string>
+    <string name="title_add_expense">Add a new expense</string>
+    <string name="title_edit_expense">Edit an expense</string>
+    <string name="delete_expense">Delete expense</string>
+    <string name="add_expense">Add expense</string>
+    <string name="edit_expense">Edit expense</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

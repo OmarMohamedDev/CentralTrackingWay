@@ -7,13 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.omohamed.centraltrackingway.R;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
 
 /**
  * Fragment used to add, edit or delete an expense
  */
-public class ManipulateExpenseFragment extends Fragment {
+public class ManipulateExpenseFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -22,6 +27,12 @@ public class ManipulateExpenseFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private EditText mDescription;
+    private EditText mAmount;
+    private EditText mDateField;
+    private Button mAddButton;
+    private Button mEditButton;
+    private Button mDeleteButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -59,8 +70,64 @@ public class ManipulateExpenseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_manipulate_expense, container, false);
+
+        mDescription = (EditText) view.findViewById(R.id.edit_text_description);
+        mAmount = (EditText) view.findViewById(R.id.edit_text_amount);
+        mDateField = (EditText) view.findViewById(R.id.edit_text_date);
+        mAddButton = (Button) view.findViewById(R.id.btn_add_expense);
+        mEditButton = (Button) view.findViewById(R.id.btn_edit_expense);
+        mDeleteButton = (Button) view.findViewById(R.id.btn_delete_expense);
+
+        //TODO: Fix the problem that we have to click twice on the edit text in order to call the picker dialog
+        mDateField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        ManipulateExpenseFragment.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+            }
+        });
+
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Save the new data in local and in the server
+
+                //Go back to the previous activity
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        mEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Edit the data in local and on the server
+
+                //Go back to the previous activity
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Delete the data in local and on the server
+
+                //Go back to the previous activity
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manipulate_expense, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -68,6 +135,8 @@ public class ManipulateExpenseFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+
+
     }
 
     @Override
@@ -87,6 +156,12 @@ public class ManipulateExpenseFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+        mDateField.setText(date);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -101,4 +176,7 @@ public class ManipulateExpenseFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
+
+
