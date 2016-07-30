@@ -20,7 +20,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private EditText inputEmail;
     private Button btnReset, btnBack;
     private FirebaseAuth auth;
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +29,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
         inputEmail = (EditText) findViewById(R.id.email);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         btnBack = (Button) findViewById(R.id.btn_back);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
         auth = FirebaseAuth.getInstance();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +49,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
                 auth.sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -62,8 +58,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(ResetPasswordActivity.this, "Failed to send reset email!", Toast.LENGTH_SHORT).show();
                                 }
-
-                                progressBar.setVisibility(View.GONE);
                             }
                         });
             }
