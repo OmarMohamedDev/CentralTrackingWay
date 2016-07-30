@@ -32,7 +32,7 @@ public class AuthActivity extends AppCompatActivity implements SigninFragment.On
         }
 
         // set the view now
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_auth);
 
         //Setting up toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

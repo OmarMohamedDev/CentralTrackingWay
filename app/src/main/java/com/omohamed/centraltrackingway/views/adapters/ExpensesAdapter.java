@@ -7,10 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.omohamed.centraltrackingway.R;
+import com.omohamed.centraltrackingway.activities.MainActivity;
+import com.omohamed.centraltrackingway.fragments.ManipulateExpenseFragment;
 import com.omohamed.centraltrackingway.models.Expense;
 import com.omohamed.centraltrackingway.utils.Util;
 
 import java.util.ArrayList;
+
+import static android.R.anim.fade_in;
+import static android.R.anim.fade_out;
 
 /**
  * Adapter used to represent the expenses data in the recycler view
@@ -31,10 +36,22 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
         public TextView mExpenseDate;
         public ViewHolder(View v) {
             super(v);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //If we click an element of the recycler view, we move to the ManipulateExpenseFragment
+                    //Where we can add, edit or delete an expense
+                    ((MainActivity)view.getContext()).getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(fade_in, fade_out)
+                            .addToBackStack(null)
+                            .replace(R.id.core_fragment_container, ManipulateExpenseFragment.newInstance("",""))
+                            .commit();
+                }
+            });
             mCardView = v;
-            mExpenseDescription = (TextView) v.findViewById(R.id.expense_description_text_view);
-            mExpenseAmount = (TextView) v.findViewById(R.id.expense_amount_text_view);
-            mExpenseDate = (TextView) v.findViewById(R.id.expense_date_text_view);
+            mExpenseDescription = (TextView) mCardView.findViewById(R.id.expense_description_text_view);
+            mExpenseAmount = (TextView) mCardView.findViewById(R.id.expense_amount_text_view);
+            mExpenseDate = (TextView) mCardView.findViewById(R.id.expense_date_text_view);
         }
     }
 

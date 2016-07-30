@@ -16,13 +16,13 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.omohamed.centraltrackingway.R;
-import com.omohamed.centraltrackingway.fragments.AddModifyExpenseFragment;
 import com.omohamed.centraltrackingway.fragments.ExpensesTrackingFragment;
+import com.omohamed.centraltrackingway.fragments.ManipulateExpenseFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                    ExpensesTrackingFragment.OnFragmentInteractionListener,
-                   AddModifyExpenseFragment.OnFragmentInteractionListener{
+                   ManipulateExpenseFragment.OnFragmentInteractionListener{
 
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;

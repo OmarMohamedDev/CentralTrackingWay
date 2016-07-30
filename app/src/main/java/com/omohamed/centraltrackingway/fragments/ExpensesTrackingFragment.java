@@ -17,13 +17,12 @@ import com.omohamed.centraltrackingway.views.adapters.ExpensesAdapter;
 
 import java.util.ArrayList;
 
+import static android.R.anim.fade_in;
+import static android.R.anim.fade_out;
+
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ExpensesTrackingFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ExpensesTrackingFragment#newInstance} factory method to
- * create an instance of this fragment.
+ *
+ * Fragment used to show a list of expense in a RecyclerView
  */
 public class ExpensesTrackingFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -100,7 +99,11 @@ public class ExpensesTrackingFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Add "Add expense logic"
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(fade_in, fade_out)
+                        .addToBackStack(null)
+                        .replace(R.id.core_fragment_container, ManipulateExpenseFragment.newInstance("",""))
+                        .commit();
             }
         });
 
