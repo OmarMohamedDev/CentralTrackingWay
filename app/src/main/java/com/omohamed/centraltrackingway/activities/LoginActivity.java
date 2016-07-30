@@ -49,12 +49,10 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.On
                 return;
             }
 
-            // Create a new Fragment to be placed in the activity layout
-            LoginFragment loginFragment = LoginFragment.newInstance("","");
-
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, loginFragment).commit();
+                    .add(R.id.fragment_container, LoginFragment.newInstance("",""))
+                    .commit();
         }
     }
 

@@ -20,8 +20,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.omohamed.centraltrackingway.R;
 import com.omohamed.centraltrackingway.activities.MainActivity;
-import com.omohamed.centraltrackingway.activities.ResetPasswordActivity;
-import com.omohamed.centraltrackingway.activities.SignupActivity;
+
+import static android.R.anim.fade_in;
+import static android.R.anim.fade_out;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,14 +97,26 @@ public class LoginFragment extends Fragment {
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SignupActivity.class));
+
+                //Replace current fragment with SignupFragment
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .setCustomAnimations(fade_in, fade_out)
+                        .replace(R.id.fragment_container, SignupFragment.newInstance("",""))
+                        .commit();
             }
         });
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ResetPasswordActivity.class));
+
+                //Replace current fragment with ResetPasswordFragment
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .setCustomAnimations(fade_in, fade_out)
+                        .replace(R.id.fragment_container, ResetPasswordFragment.newInstance("",""))
+                        .commit();
             }
         });
 
