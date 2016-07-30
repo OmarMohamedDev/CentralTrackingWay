@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.omohamed.centraltrackingway.R;
 
+import static android.R.anim.fade_in;
+import static android.R.anim.fade_out;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -85,7 +88,12 @@ public class ResetPasswordFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
+                //Note: We are not using popbackstack in order to mantain the fade out animation
+                //To obtain the same result, we replace and avoid to add to the backstack
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(fade_in, fade_out)
+                        .replace(R.id.auth_fragment_container, SigninFragment.newInstance("",""))
+                        .commit();
             }
         });
 

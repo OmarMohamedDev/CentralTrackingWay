@@ -9,11 +9,11 @@ import android.support.v7.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.omohamed.centraltrackingway.R;
-import com.omohamed.centraltrackingway.fragments.LoginFragment;
 import com.omohamed.centraltrackingway.fragments.ResetPasswordFragment;
+import com.omohamed.centraltrackingway.fragments.SigninFragment;
 import com.omohamed.centraltrackingway.fragments.SignupFragment;
 
-public class LoginActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
+public class AuthActivity extends AppCompatActivity implements SigninFragment.OnFragmentInteractionListener,
                                                                 SignupFragment.OnFragmentInteractionListener,
                                                                 ResetPasswordFragment.OnFragmentInteractionListener{
 
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.On
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(new Intent(AuthActivity.this, MainActivity.class));
             finish();
         }
 
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.On
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
-        if (findViewById(R.id.fragment_container) != null) {
+        if (findViewById(R.id.auth_fragment_container) != null) {
 
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.On
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, LoginFragment.newInstance("",""))
+                    .add(R.id.auth_fragment_container, SigninFragment.newInstance("",""))
                     .commit();
         }
     }

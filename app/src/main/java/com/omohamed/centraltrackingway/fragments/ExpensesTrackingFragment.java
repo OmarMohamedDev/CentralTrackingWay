@@ -3,12 +3,19 @@ package com.omohamed.centraltrackingway.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.omohamed.centraltrackingway.R;
+import com.omohamed.centraltrackingway.models.Expense;
+import com.omohamed.centraltrackingway.views.adapters.ExpensesAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +34,7 @@ public class ExpensesTrackingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ArrayList<Expense> mExpensesList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -59,13 +67,45 @@ public class ExpensesTrackingFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //TODO: Retrieve arraylist of expenses from firebase
+        //Look at instant database
+        mExpensesList = new ArrayList<>();
+        //TEST
+        mExpensesList.add(Expense.generateExpense());
+        mExpensesList.add(Expense.generateExpense());
+        mExpensesList.add(Expense.generateExpense());
+        //
+        //
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_expenses_tracking, container, false);
+
+        //Setting up the adapter in order to show up the data retrieved by the server in the
+        //recycler view
+        ExpensesAdapter adapter = new ExpensesAdapter(mExpensesList);
+        RecyclerView myView =  (RecyclerView)view.findViewById(R.id.expenses_recycler_view);
+        myView.setHasFixedSize(true);
+        myView.setAdapter(adapter);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        myView.setLayoutManager(llm);
+        //
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Add "Add expense logic"
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_expenses_tracking, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

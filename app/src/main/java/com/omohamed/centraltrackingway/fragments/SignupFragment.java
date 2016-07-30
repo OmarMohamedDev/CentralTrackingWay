@@ -100,7 +100,7 @@ public class SignupFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addToBackStack(null)
                         .setCustomAnimations(fade_in, fade_out)
-                        .replace(R.id.fragment_container, ResetPasswordFragment.newInstance("",""))
+                        .replace(R.id.auth_fragment_container, ResetPasswordFragment.newInstance("",""))
                         .commit();
             }
         });
@@ -108,7 +108,12 @@ public class SignupFragment extends Fragment {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
+                //Note: We are not using popbackstack in order to mantain the fade out animation
+                //To obtain the same result, we replace and avoid to add to the backstack
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(fade_in, fade_out)
+                        .replace(R.id.auth_fragment_container, SigninFragment.newInstance("",""))
+                        .commit();
             }
         });
 

@@ -1,31 +1,28 @@
 package com.omohamed.centraltrackingway.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.omohamed.centraltrackingway.R;
-import com.omohamed.centraltrackingway.models.Expense;
-import com.omohamed.centraltrackingway.views.adapters.ExpensesAdapter;
-
-import java.util.ArrayList;
+import com.omohamed.centraltrackingway.fragments.AddModifyExpenseFragment;
+import com.omohamed.centraltrackingway.fragments.ExpensesTrackingFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+                   ExpensesTrackingFragment.OnFragmentInteractionListener,
+                   AddModifyExpenseFragment.OnFragmentInteractionListener{
 
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -50,40 +47,11 @@ public class MainActivity extends AppCompatActivity
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    startActivity(new Intent(MainActivity.this, AuthActivity.class));
                     finish();
                 }
             }
         };
-
-        //TODO: Retrieve arraylist of expenses from firebase
-        //Look at instant database
-        ArrayList<Expense> expensesList = new ArrayList<>();
-        //TEST
-        expensesList.add(Expense.generateExpense());
-        expensesList.add(Expense.generateExpense());
-        expensesList.add(Expense.generateExpense());
-        //
-        //
-
-        //Setting up the adapter in order to show up the data retrieved by the server in the
-        //recycler view
-        ExpensesAdapter adapter = new ExpensesAdapter(expensesList);
-        RecyclerView myView =  (RecyclerView)findViewById(R.id.expenses_recycler_view);
-        myView.setHasFixedSize(true);
-        myView.setAdapter(adapter);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        myView.setLayoutManager(llm);
-        //
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              //TODO: Add "Add expense logic"
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -93,6 +61,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Add the fragment to the 'core_fragment_container' FrameLayout
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.core_fragment_container, ExpensesTrackingFragment.newInstance("",""))
+                .commit();
     }
 
     @Override
@@ -179,5 +152,11 @@ public class MainActivity extends AppCompatActivity
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
         }
+    }
+
+    //TODO: Check if necessary
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

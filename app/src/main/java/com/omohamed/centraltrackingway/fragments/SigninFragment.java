@@ -27,12 +27,12 @@ import static android.R.anim.fade_out;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
+ * {@link SigninFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link SigninFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment {
+public class SigninFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public LoginFragment() {
+    public SigninFragment() {
         // Required empty public constructor
     }
 
@@ -58,11 +58,11 @@ public class LoginFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
+     * @return A new instance of fragment SigninFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
+    public static SigninFragment newInstance(String param1, String param2) {
+        SigninFragment fragment = new SigninFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -102,7 +102,7 @@ public class LoginFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addToBackStack(null)
                         .setCustomAnimations(fade_in, fade_out)
-                        .replace(R.id.fragment_container, SignupFragment.newInstance("",""))
+                        .replace(R.id.auth_fragment_container, SignupFragment.newInstance("",""))
                         .commit();
             }
         });
@@ -115,7 +115,7 @@ public class LoginFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addToBackStack(null)
                         .setCustomAnimations(fade_in, fade_out)
-                        .replace(R.id.fragment_container, ResetPasswordFragment.newInstance("",""))
+                        .replace(R.id.auth_fragment_container, ResetPasswordFragment.newInstance("",""))
                         .commit();
             }
         });
