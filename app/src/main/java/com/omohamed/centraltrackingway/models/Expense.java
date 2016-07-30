@@ -31,9 +31,9 @@ public class Expense {
      */
     private Expense(){
         this.amount = new BigDecimal("0");
-        this.description = "";
+        this.description = "Description not available";
         //Today's date
-        this.date = new Date(Calendar.getInstance().get(Calendar.SECOND));
+        this.date = Calendar.getInstance().getTime();
     }
 
     /**
@@ -52,7 +52,7 @@ public class Expense {
      * Factory method that returns a new expense object with default value
      * @return a new Expense object initialized with default values
      */
-    public Expense generateExpense(){
+    public static Expense generateExpense(){
         return new Expense();
     }
 
@@ -63,7 +63,7 @@ public class Expense {
      * @param date date of the expense
      * @return a new Expense object initialized with the passed parameters
      */
-    public Expense generateExpense(String amount, String description, Date date){
+    public static Expense generateExpense(String amount, String description, Date date){
         return new Expense(amount, description, date);
     }
 
