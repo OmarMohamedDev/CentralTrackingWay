@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_expenses"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/ic_menu_agenda"
             android:title="@string/expenses"/>
     </group>
 
@@ -26,7 +26,7 @@
                 -->
             <item
                 android:id="@+id/nav_sign_out"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@android:drawable/ic_menu_close_clear_cancel"
                 android:title="@string/btn_sign_out" />
         </menu>
     </item>
