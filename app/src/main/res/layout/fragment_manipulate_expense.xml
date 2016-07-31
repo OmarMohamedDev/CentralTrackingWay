@@ -24,6 +24,7 @@
                 android:hint="@string/hint_description"
                 android:inputType="text"
                 android:maxLines="1"
+                android:maxLength="25"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black" />
         </android.support.design.widget.TextInputLayout>
@@ -39,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_amount"
+                android:maxLength="25"
                 android:inputType="numberDecimal"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"  />
@@ -57,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_date"
-                android:inputType="date"
+                android:maxLength="10"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"  />
         </android.support.design.widget.TextInputLayout>

@@ -15,6 +15,7 @@ public class Constants {
      * Constants used to indicate which type of operation we need to execute
      */
     public static class CRUDOperations{
+        public static final String OPERATION_TYPE = "OPERATION_TYPE";
         public static final String ADD_EXPENSE = "ADD_EXPENSE";
         public static final String EDIT_EXPENSE = "EDIT_EXPENSE";
         public static final String DELETE_EXPENSE = "DELETE_EXPENSE";
