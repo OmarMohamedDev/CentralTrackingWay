@@ -2,7 +2,6 @@ package com.omohamed.centraltrackingway.activities;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +11,29 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.omohamed.centraltrackingway.R;
-import com.omohamed.centraltrackingway.fragments.ResetPasswordFragment;
 import com.omohamed.centraltrackingway.fragments.SigninFragment;
 
-public class AuthActivity extends AppCompatActivity implements SigninFragment.OnFragmentInteractionListener,
-                                                                ResetPasswordFragment.OnFragmentInteractionListener{
 
+/**
+ * Activity that is used as container for Authentication fragments
+ *
+ * @author omarmohamed
+ */
+public class AuthActivity extends AppCompatActivity {
+
+    /**
+     * Constant used in the app log
+     */
+    private static final String TAG = AuthActivity.class.getSimpleName();
+
+    /**
+     * Variable used to retrieve the Firebase authentication
+     */
     private FirebaseAuth mAuth;
+
+    /**
+     * Listener used to capture Firebase authentication status updates
+     */
     private FirebaseAuth.AuthStateListener mAuthListener;
 
 
@@ -34,10 +49,10 @@ public class AuthActivity extends AppCompatActivity implements SigninFragment.On
         if (mAuth.getCurrentUser()!= null) {
             startActivity(new Intent(AuthActivity.this, MainActivity.class));
             finish();
-            Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_in:");
+            Log.d(TAG, "onAuthStateChanged:signed_in:");
         } else {
             // User is signed out
-            Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_out");
+            Log.d(TAG, "onAuthStateChanged:signed_out");
         }
         //
 
@@ -49,7 +64,7 @@ public class AuthActivity extends AppCompatActivity implements SigninFragment.On
                 if (user != null) {
                     startActivity(new Intent(AuthActivity.this, MainActivity.class));
                     finish();
-                    Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_in:" + user.getUid());
+                    Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_in");
                 } else {
                     // User is signed out
                     Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_out");
@@ -58,7 +73,7 @@ public class AuthActivity extends AppCompatActivity implements SigninFragment.On
         };
         //
 
-        // set the view now
+        //Set the view
         setContentView(R.layout.activity_auth);
 
         //Setting up toolbar
@@ -78,15 +93,9 @@ public class AuthActivity extends AppCompatActivity implements SigninFragment.On
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.auth_fragment_container, SigninFragment.newInstance("",""))
+                    .add(R.id.auth_fragment_container, SigninFragment.newInstance())
                     .commit();
         }
-    }
-
-    //TODO:Check if necessary
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
 

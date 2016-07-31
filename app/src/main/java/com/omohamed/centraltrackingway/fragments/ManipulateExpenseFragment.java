@@ -1,7 +1,5 @@
 package com.omohamed.centraltrackingway.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,19 +27,55 @@ import java.util.Date;
 
 /**
  * Fragment used to add, edit or delete an expense
+ * @author omarmohamed
  */
 public class ManipulateExpenseFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
 
-    private String mOperationType;
-    private Expense mExpense;
-    private EditText mDescription;
-    private EditText mAmount;
-    private EditText mDate;
-    private Button mAddButton;
-    private Button mEditButton;
-    private Button mDeleteButton;
+    /**
+     * Constant used in the app log
+     */
+    private static final String TAG = ManipulateExpenseFragment.class.getSimpleName();
 
-    private OnFragmentInteractionListener mListener;
+    /**
+     * Variable used to store the operationType (Add or Edit) passed by as parameter to
+     * understand how the fragment should behave
+     */
+    private String mOperationType;
+
+    /**
+     * Expense object passed as parameter that we have to manipulate
+     */
+    private Expense mExpense;
+
+    /**
+     * Description EditText used to manipulate the expense object passed as parameter
+     */
+    private EditText mDescriptionEditText;
+
+    /**
+     * Amount EditText used to manipulate the expense object passed as parameter
+     */
+    private EditText mAmountEditText;
+
+    /**
+     * Date EditText used to manipulate the expense object passed as parameter
+     */
+    private EditText mDateEditText;
+
+    /**
+     * Add button to add a new expense
+     */
+    private Button mAddButton;
+
+    /**
+     * Edit button to edit an expense
+     */
+    private Button mEditButton;
+
+    /**
+     * Delete button to delete an expense
+     */
+    private Button mDeleteButton;
 
     public ManipulateExpenseFragment() {
         // Required empty public constructor
@@ -69,12 +103,13 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            //Edit Case
             if(getArguments().getSerializable(Constants.CRUDOperations.OPERATION_TYPE)
                     .equals(Constants.CRUDOperations.EDIT_EXPENSE)) {
+                //Edit Case
                 mOperationType = getArguments().getString(Constants.CRUDOperations.OPERATION_TYPE);
                 mExpense = (Expense) getArguments().getSerializable(Constants.Type.TYPE_EXPENSE);
-            } else { //Add Case
+            } else {
+                //Add Case
                 mOperationType = getArguments().getString(Constants.CRUDOperations.OPERATION_TYPE);
             }
         }
@@ -84,32 +119,34 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manipulate_expense, container, false);
 
-        mDescription = (EditText) view.findViewById(R.id.edit_text_description);
-        mAmount = (EditText) view.findViewById(R.id.edit_text_amount);
-        mDate = (EditText) view.findViewById(R.id.edit_text_date);
+        mDescriptionEditText = (EditText) view.findViewById(R.id.edit_text_description);
+        mAmountEditText = (EditText) view.findViewById(R.id.edit_text_amount);
+        mDateEditText = (EditText) view.findViewById(R.id.edit_text_date);
         mAddButton = (Button) view.findViewById(R.id.btn_add_expense);
         mEditButton = (Button) view.findViewById(R.id.btn_edit_expense);
         mDeleteButton = (Button) view.findViewById(R.id.btn_delete_expense);
 
         //Checking if we are in the ADD mode or in the EDIT/DELETE MODE
+        //and change UI accordingly
         if(mOperationType.equals(Constants.CRUDOperations.ADD_EXPENSE)){
             mEditButton.setVisibility(View.INVISIBLE);
             mDeleteButton.setVisibility(View.INVISIBLE);
             //Setting up the date of today as default for the new expenses
-            mDate.setText(Utilities.formatDate(Calendar.getInstance().getTime()));
+            mDateEditText.setText(Utilities.formatDate(Calendar.getInstance().getTime()));
         } else {
             mAddButton.setVisibility(View.INVISIBLE);
 
             //Setting up the value already stored inside the object that we have to edit/delete
-            mDescription.setText(mExpense.getDescription());
-            mAmount.setText(mExpense.getAmount().replaceAll(Constants.Patterns.REMOVE_CURRENCIES_SYMBOLS,""));
-            mDate.setText(mExpense.getDate());
+            mDescriptionEditText.setText(mExpense.getDescription());
+            mAmountEditText.setText(mExpense.getAmount().replaceAll(Constants.Patterns.REMOVE_CURRENCIES_SYMBOLS, ""));
+            mDateEditText.setText(mExpense.getDate());
         }
 
         //TODO: Fix the problem that we have to click twice on the edit text in order to call the picker dialog
-        mDate.setOnClickListener(new View.OnClickListener() {
+        mDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar now = Calendar.getInstance();
@@ -132,36 +169,44 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference(Constants.DBNodes.USERS);
                 String userUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                //
 
+                //Button Delete pressed case
                 if(view.getId() == R.id.btn_delete_expense){
+                    //Deleting on realtime db
                     myRef.child(userUID)
                             .child(Constants.DBNodes.EXPENSES)
                             .child(mExpense.getUid())
                             .removeValue();
 
-                    //Go back to the previous activity
+                    //Go back to the previous activity when the operation is ended
                     getActivity().getSupportFragmentManager().popBackStack();
 
+                    //Button Add or Edit pressed
                 } else {
 
+                    //If the edit text are filled up properly
                     if(areFieldsFilledCorrectly()) {
 
-                        String description = mDescription.getText().toString();
+                        //Retrieve description
+                        String description = mDescriptionEditText.getText().toString();
 
                         //We transform it in a String, remove the currencies symbols, transform it in BigDecimal
-                        BigDecimal amount = new BigDecimal(mAmount.getText().toString()
+                        BigDecimal amount = new BigDecimal(mAmountEditText.getText().toString()
                                 .replaceAll(Constants.Patterns.REMOVE_CURRENCIES_SYMBOLS, ""));
 
                         //We get the date string, format it following a pattern in utilities and than return the date object
-                        Date date = Utilities.fromStringToDate(mDate.getText().toString());
+                        Date date = Utilities.fromStringToDate(mDateEditText.getText().toString());
 
+                        //Generating an expense object with the data retrieved by the data
+                        //Assigning a new uid if add action, retrieving the old one otherwise
                         if (view.getId() == R.id.btn_add_expense) {
                             mExpense = Expense.generateExpense(myRef.push().getKey(), amount, description, date);
 
                         } else {
                             mExpense = Expense.generateExpense(mExpense.getUid(), amount, description, date);
                         }
-
+                        //Adding/Editing expense on realtime db
                         myRef.child(userUID)
                                 .child(Constants.DBNodes.EXPENSES)
                                 .child(mExpense.getUid())
@@ -171,6 +216,7 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
                         getActivity().getSupportFragmentManager().popBackStack();
 
                     } else {
+                        //Validation system blocked action and require adjustments
                         Toast.makeText(getActivity(), getString(R.string.fill_all_the_fields), Toast.LENGTH_SHORT).show();
                     }
 
@@ -184,9 +230,9 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
              */
             private boolean areFieldsFilledCorrectly(){
                 //Retrieving strings from UI elements
-                String descriptionString = mDescription.getText().toString();
-                String amountString = mAmount.getText().toString();
-                String dateString =  mDate.getText().toString();
+                String descriptionString = mDescriptionEditText.getText().toString();
+                String amountString = mAmountEditText.getText().toString();
+                String dateString = mDateEditText.getText().toString();
 
                 //Verifying date validity
                 boolean isDateValid = false;
@@ -215,55 +261,21 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
         mEditButton.setOnClickListener(crudButtonsOnClickListener);
         mDeleteButton.setOnClickListener(crudButtonsOnClickListener);
 
-        // Inflate the layout for this fragment
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
+    /**
+     * Method called by the DatePicker dialog to set the data picked up by the user
+     *
+     * @param view        dialog
+     * @param year        year selected
+     * @param monthOfYear month selected (-1)
+     * @param dayOfMonth  day of the month selected
+     */
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
-        mDate.setText(date);
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        String date = dayOfMonth+"/"+(monthOfYear + 1) + "/" + year;
+        mDateEditText.setText(date);
     }
 
 }

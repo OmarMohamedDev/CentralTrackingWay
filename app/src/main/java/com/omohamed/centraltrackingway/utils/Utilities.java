@@ -12,20 +12,19 @@ import java.util.Locale;
 
 /**
  * Class used to gather utility methods
- * Created by omarmohamed on 30/07/2016.
+ * @author omarmohamed
  */
 
 public class Utilities {
 
     /**
      * Method that get as input a BigDecimal and return a string formatted
-     * in the currency choosed by the user previously
-     * @param amount bigdecimal amount that have to be formatted
+     * in the local currency of the user
+     * @param amount BigDecimal amount that have to be formatted
      * @return string with the value of the bigdecimal
      */
     public static String formatAmount(BigDecimal amount){
-        //TODO: Temporary value, retrieve dynamically the correct currency
-        Locale currency = Locale.US;
+        Locale currency = Locale.getDefault();
         NumberFormat costFormat = NumberFormat.getCurrencyInstance(currency);
         costFormat.setMinimumFractionDigits( 1 );
         costFormat.setMaximumFractionDigits( 2 );

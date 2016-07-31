@@ -1,8 +1,6 @@
 package com.omohamed.centraltrackingway.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -24,77 +22,88 @@ import com.omohamed.centraltrackingway.activities.MainActivity;
 import static android.R.anim.fade_in;
 import static android.R.anim.fade_out;
 
+//"Transaction between fragments" animations
+
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SigninFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SigninFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment that permit to the user to signin in the application
+ * providing email and password created in the Signup page
+ * @author omarmohamed
  */
 public class SigninFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private EditText inputEmail, inputPassword;
-    private FirebaseAuth auth;
-    private Button btnSignup, btnLogin, btnReset;
 
+    /**
+     * Constant used in the app log
+     */
+    private static final String TAG = SigninFragment.class.getSimpleName();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    /**
+     * User email editext
+     */
+    private EditText mInputEmail;
 
-    private OnFragmentInteractionListener mListener;
+    /**
+     * User password edittext
+     */
+    private EditText mInputPassword;
+
+    /**
+     * Variable used to retrieve the Firebase authentication
+     */
+    private FirebaseAuth mAuth;
+
+    /**
+     * Button that permit to go to the signup fragment
+     */
+    private Button mButtonSignup;
+
+    /**
+     * Button that trigger the signin process
+     */
+    private Button mButtonSignin;
+
+    /**
+     * Button that permit to go to the reset password fragment
+     */
+    private Button mButtonResetPassword;
 
     public SigninFragment() {
         // Required empty public constructor
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Factory method that reate a new instance of
+     * this fragment
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment SigninFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static SigninFragment newInstance(String param1, String param2) {
+    public static SigninFragment newInstance() {
         SigninFragment fragment = new SigninFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_signin, container, false);
 
-        inputEmail = (EditText) view.findViewById(R.id.email);
-        inputPassword = (EditText) view.findViewById(R.id.password);
-        btnSignup = (Button) view.findViewById(R.id.btn_signup);
-        btnLogin = (Button) view.findViewById(R.id.btn_login);
-        btnReset = (Button) view.findViewById(R.id.btn_reset_password);
+        mInputEmail = (EditText) view.findViewById(R.id.email);
+        mInputPassword = (EditText) view.findViewById(R.id.password);
+        mButtonSignup = (Button) view.findViewById(R.id.btn_signup);
+        mButtonSignin = (Button) view.findViewById(R.id.btn_login);
+        mButtonResetPassword = (Button) view.findViewById(R.id.btn_reset_password);
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        //Get Firebase mAuth instance
+        mAuth = FirebaseAuth.getInstance();
 
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+        //Setting up the transition to the signup fragment
+        mButtonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -107,7 +116,8 @@ public class SigninFragment extends Fragment {
             }
         });
 
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        //Setting up the transition to the reset password fragment
+        mButtonResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -120,11 +130,12 @@ public class SigninFragment extends Fragment {
             }
         });
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        //Triggering the signin process
+        mButtonSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = inputEmail.getText().toString();
-                final String password = inputPassword.getText().toString();
+                String email = mInputEmail.getText().toString();
+                final String password = mInputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getActivity(), getString(R.string.enter_email), Toast.LENGTH_SHORT).show();
@@ -137,21 +148,22 @@ public class SigninFragment extends Fragment {
                 }
 
                 //authenticate user
-                auth.signInWithEmailAndPassword(email, password)
+                mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
+                                // the mAuth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     // there was an error
                                     if (password.length() < 6) {
-                                        inputPassword.setError(getString(R.string.minimum_password));
+                                        mInputPassword.setError(getString(R.string.minimum_password));
                                     } else {
                                         Toast.makeText(getActivity(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
+                                    //Signin successful, redirecting to the core activity
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
@@ -162,44 +174,5 @@ public class SigninFragment extends Fragment {
         });
 
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

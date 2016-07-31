@@ -1,7 +1,6 @@
 package com.omohamed.centraltrackingway.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,27 +10,44 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.omohamed.centraltrackingway.R;
 import com.omohamed.centraltrackingway.fragments.ExpensesTrackingFragment;
-import com.omohamed.centraltrackingway.fragments.ManipulateExpenseFragment;
 
+/**
+ * Fragment that is used as container for the fragments that manage the core functionality of the app
+ *
+ * @author omarmohamed
+ */
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-                   ExpensesTrackingFragment.OnFragmentInteractionListener,
-                   ManipulateExpenseFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    /**
+     * Constant used in the app log
+     */
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    /**
+     * Variable used to retrieve the Firebase authentication
+     */
     private FirebaseAuth mAuth;
+
+    /**
+     * Listener used to capture Firebase authentication status updates
+     */
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Set the view
         setContentView(R.layout.activity_main);
+
+        //Setting up toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         if (user == null) {
             startActivity(new Intent(MainActivity.this, AuthActivity.class));
             finish();
-            Log.d(MainActivity.class.getSimpleName(), "onAuthStateChanged:signed_in:" + user.getUid());
+            Log.d(MainActivity.class.getSimpleName(), "onAuthStateChanged:signed_in");
         } else {
             // User is signed out
             Log.d(MainActivity.class.getSimpleName(), "onAuthStateChanged:signed_out");
@@ -67,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         };
         //
 
+        //Setting up Navigation Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -75,15 +92,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //
 
         // Add the fragment to the 'core_fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.core_fragment_container, ExpensesTrackingFragment.newInstance("",""))
+                .add(R.id.core_fragment_container, ExpensesTrackingFragment.newInstance())
                 .commit();
     }
 
     @Override
     public void onBackPressed() {
+        //Managing navigation drawer behavior
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -93,48 +112,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //TODO: Low Priority - Add useful settings
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //TODO: Check if the parent/back button connections are properly setted
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_expenses) {
-            // Handle the expense action
+            //TODO: Handle the expense action
         }
-        /*
-        else if (id == R.id.nav_change_email) {
-            //TODO: Low Priority
-
-        } else if (id == R.id.nav_change_password) {
-            //TODO: Low Priority
-
-        } else if (id == R.id.nav_remove_user) {
-            //TODO: Low Priority
-
-        }
-        */
         else if (id == R.id.nav_sign_out) {
             signOut();
         }
@@ -166,11 +150,5 @@ public class MainActivity extends AppCompatActivity
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-    }
-
-    //TODO: Check if necessary
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

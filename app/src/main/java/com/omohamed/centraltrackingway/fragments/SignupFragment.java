@@ -30,11 +30,44 @@ import static android.R.anim.fade_out;
 
 /**
  * Fragment used to permit to the user to signup a new account
+ * @author omarmohamed
  */
 public class SignupFragment extends Fragment {
-    private EditText inputEmail, inputPassword;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
-    private FirebaseAuth auth;
+
+    /**
+     * Constant used in the app log
+     */
+    private static final String TAG = SignupFragment.class.getSimpleName();
+
+    /**
+     * User email EditText
+     */
+    private EditText mInputEmail;
+
+    /**
+     * User password EditText
+     */
+    private EditText mInputPassword;
+
+    /**
+     * Button that redirect to the signin fragment
+     */
+    private Button mButtonSignIn;
+
+    /**
+     * Button that trigger the signup process
+     */
+    private Button mButtonSignUp;
+
+    /**
+     * Button that redirect to the reset password fragment
+     */
+    private Button mButtonResetPassword;
+
+    /**
+     * Variable used to retrieve the Firebase authentication
+     */
+    private FirebaseAuth mAuth;
 
     public SignupFragment() {
         // Required empty public constructor
@@ -60,18 +93,20 @@ public class SignupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        //Get Firebase mAuth instance
+        mAuth = FirebaseAuth.getInstance();
 
-        btnSignIn = (Button) view.findViewById(R.id.sign_in_button);
-        btnSignUp = (Button) view.findViewById(R.id.sign_up_button);
-        inputEmail = (EditText) view.findViewById(R.id.email);
-        inputPassword = (EditText) view.findViewById(R.id.password);
-        btnResetPassword = (Button) view.findViewById(R.id.btn_reset_password);
+        mButtonSignIn = (Button) view.findViewById(R.id.sign_in_button);
+        mButtonSignUp = (Button) view.findViewById(R.id.sign_up_button);
+        mInputEmail = (EditText) view.findViewById(R.id.email);
+        mInputPassword = (EditText) view.findViewById(R.id.password);
+        mButtonResetPassword = (Button) view.findViewById(R.id.btn_reset_password);
 
-        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+        //Redirecting to the reset password fragment
+        mButtonResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Replace current fragment with Fragment
@@ -83,25 +118,28 @@ public class SignupFragment extends Fragment {
             }
         });
 
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        //Redirecting to the signin fragment
+        mButtonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Note: We are not using popbackstack in order to mantain the fade out animation
                 //To obtain the same result, we replace and avoid to add to the backstack
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(fade_in, fade_out)
-                        .replace(R.id.auth_fragment_container, SigninFragment.newInstance("",""))
+                        .replace(R.id.auth_fragment_container, SigninFragment.newInstance())
                         .commit();
             }
         });
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        //Triggering the signup process
+        mButtonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                String email = mInputEmail.getText().toString().trim();
+                String password = mInputPassword.getText().toString().trim();
 
+                //Input validation
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getActivity(), getString(R.string.enter_email), Toast.LENGTH_SHORT).show();
                     return;
@@ -116,42 +154,45 @@ public class SignupFragment extends Fragment {
                     Toast.makeText(getActivity(), getString(R.string.enter_password), Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //
 
                 //create user
-                auth.createUserWithEmailAndPassword(email, password)
+                mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(getActivity(), getString(R.string.user_with_email_created) + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getString(R.string.user_with_email_created)
+                                        + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                                 // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
+                                // the mAuth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(getActivity(), getString(R.string.authentication_failed) + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    //Saving creation date in the database (we are NOT saving also the
-                                    //other user data as required by the requirements, as username/email
-                                    //or password just because firebase is already storing them in the Firebase user
-                                    //object, so are available in any moment
+                                /* IMPORTANT:
+                                *Saving creation date in the database (we are NOT saving also the
+                                *other user data as required by the requirements, as username/email
+                                *or password just because firebase is already storing them in the Firebase user
+                                *object, so are available in any moment
+                                */
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                                     DatabaseReference myRef = database.getReference();
-                                    // myRef.child(Constants.DBNodes.USERS).setValue(auth.getCurrentUser().getUid());
-                                    //Adding creationg date
-                                    myRef.child(Constants.DBNodes.USERS).child(auth.getCurrentUser().getUid())
+
+                                    //Adding creationg date to the db instance
+                                    myRef.child(Constants.DBNodes.USERS).child(mAuth.getCurrentUser().getUid())
                                             .child(Constants.DBNodes.CREATION_DATE)
                                             .setValue(Utilities.formatDate(Calendar.getInstance().getTime()));
 
+                                    //Signup and signin successful, redirecting to the core activity
                                     startActivity(new Intent(getActivity(), MainActivity.class));
                                     getActivity().finish();
                                 }
                             }
                         });
-
             }
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
 

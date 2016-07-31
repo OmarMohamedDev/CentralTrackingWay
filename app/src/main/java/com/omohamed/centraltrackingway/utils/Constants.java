@@ -2,7 +2,7 @@ package com.omohamed.centraltrackingway.utils;
 
 /**
  * Class used to store constants used in the application
- * Created by omarmohamed on 30/07/2016.
+ * @author omarmohamed t
  */
 
 public class Constants {
