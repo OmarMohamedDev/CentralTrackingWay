@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,8 +25,8 @@ public class MainActivity extends AppCompatActivity
                    ExpensesTrackingFragment.OnFragmentInteractionListener,
                    ManipulateExpenseFragment.OnFragmentInteractionListener{
 
-    private FirebaseAuth.AuthStateListener authListener;
-    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +35,36 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //get firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        //If the user is not logged-in, the app bring him back to the authentication page
+        //Get Firebase mAuth instance
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            startActivity(new Intent(MainActivity.this, AuthActivity.class));
+            finish();
+            Log.d(MainActivity.class.getSimpleName(), "onAuthStateChanged:signed_in:" + user.getUid());
+        } else {
+            // User is signed out
+            Log.d(MainActivity.class.getSimpleName(), "onAuthStateChanged:signed_out");
+        }
+        //
 
-        //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        authListener = new FirebaseAuth.AuthStateListener() {
+        //Authentication listener used by Firebase Library
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
                     startActivity(new Intent(MainActivity.this, AuthActivity.class));
                     finish();
+                    Log.d(MainActivity.class.getSimpleName(), "onAuthStateChanged:signed_in:");
+                } else {
+                    // User is signed out
+                    Log.d(MainActivity.class.getSimpleName(), "onAuthStateChanged:signed_out");
                 }
             }
         };
+        //
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -132,7 +145,7 @@ public class MainActivity extends AppCompatActivity
 
     //sign out method
     private void signOut() {
-        auth.signOut();
+        mAuth.signOut();
     }
 
     @Override
@@ -143,14 +156,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        auth.addAuthStateListener(authListener);
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (authListener != null) {
-            auth.removeAuthStateListener(authListener);
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 

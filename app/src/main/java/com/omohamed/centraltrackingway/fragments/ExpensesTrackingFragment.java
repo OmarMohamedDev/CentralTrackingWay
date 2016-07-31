@@ -1,7 +1,6 @@
 package com.omohamed.centraltrackingway.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,12 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.omohamed.centraltrackingway.R;
-import com.omohamed.centraltrackingway.activities.AuthActivity;
 import com.omohamed.centraltrackingway.models.Expense;
 import com.omohamed.centraltrackingway.utils.Constants;
 import com.omohamed.centraltrackingway.views.adapters.ExpenseFirebaseAdapter;
@@ -100,22 +96,9 @@ public class ExpensesTrackingFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         String userUID = "";
 
-        //Check on the user: if slogged, request auth, get the email otherwise
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name and email
-            userUID= user.getUid();
-        } else {
-            // user auth state is changed - user is null
-            // launch login activity
-            startActivity(new Intent(getActivity(), AuthActivity.class));
-            getActivity().finish();
-        }
-
         DatabaseReference myRef = database.getReference(Constants.DBNodes.USERS)
                 .child(userUID)
                 .child(Constants.DBNodes.EXPENSES);
-//                .child("2151b2eb-c2a0-4a40-81ff-4878dfe9a423");
 
         ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder> recyclerViewAdapter = new ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder>(Expense.class, R.layout.card_view_expense, ExpenseFirebaseAdapter.ViewHolder.class,  myRef) {
             @Override

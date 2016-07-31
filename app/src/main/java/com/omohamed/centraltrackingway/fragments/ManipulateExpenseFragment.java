@@ -1,7 +1,6 @@
 package com.omohamed.centraltrackingway.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,12 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.omohamed.centraltrackingway.R;
-import com.omohamed.centraltrackingway.activities.AuthActivity;
 import com.omohamed.centraltrackingway.models.Expense;
 import com.omohamed.centraltrackingway.utils.Constants;
 import com.omohamed.centraltrackingway.utils.Utilities;
@@ -135,18 +131,6 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference(Constants.DBNodes.USERS);
                 String userUID = "";
-
-                //Check on the user: if slogged, request auth, get the email otherwise
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    // Name and email
-                    userUID= user.getUid();
-                } else {
-                    // user auth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(getActivity(), AuthActivity.class));
-                    getActivity().finish();
-                }
 
                 if(view.getId() == R.id.btn_delete_expense){
                     myRef.child(userUID)

@@ -28,9 +28,22 @@ public class AuthActivity extends AppCompatActivity implements SigninFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //If the user is logged-in, the app bring him directly to the core page view
         //Get Firebase mAuth instance
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
 
+        if (mAuth.getCurrentUser()!= null) {
+            startActivity(new Intent(AuthActivity.this, MainActivity.class));
+            finish();
+            Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_in:");
+        } else {
+            // User is signed out
+            Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_out");
+        }
+        //
+
+        //Authentication listener used by the Firebase library
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -43,9 +56,9 @@ public class AuthActivity extends AppCompatActivity implements SigninFragment.On
                     // User is signed out
                     Log.d(AuthActivity.class.getSimpleName(), "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
+        //
 
         // set the view now
         setContentView(R.layout.activity_auth);
