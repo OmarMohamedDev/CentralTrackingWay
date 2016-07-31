@@ -38,11 +38,18 @@ public class Expense implements Serializable{
     private String date;
 
     /**
+     * Empty constructor required by firebase platform
+     */
+    private Expense() {
+
+    }
+
+    /**
      * Private Constructor without parameters called by the factory method
      * and initialized with default values
      */
-    private Expense(){
-        this.uid = java.util.UUID.randomUUID().toString();
+    private Expense(String uid){
+        this.uid = uid;
         this.amount = "0";
         this.description = "Description not available";
         //Today's date
@@ -55,8 +62,8 @@ public class Expense implements Serializable{
      * @param description description of the expense
      * @param date date of the expense
      */
-    private Expense(String amount, String description, String date){
-        this.uid = java.util.UUID.randomUUID().toString();
+    private Expense(String uid, String amount, String description, String date){
+        this.uid = uid;
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -66,8 +73,8 @@ public class Expense implements Serializable{
      * Factory method that returns a new expense object with default value
      * @return a new Expense object initialized with default values
      */
-    public static Expense generateExpense(){
-        return new Expense();
+    public static Expense generateExpense(String uid){
+        return new Expense(uid);
     }
 
     /**
@@ -77,10 +84,10 @@ public class Expense implements Serializable{
      * @param date date of the expense
      * @return a new Expense object initialized with the passed parameters
      */
-    public static Expense generateExpense(BigDecimal amount, String description, Date date){
+    public static Expense generateExpense(String uid, BigDecimal amount, String description, Date date){
         String amountString = Utilities.formatAmount(amount);
         String dateString = Utilities.formatDate(date);
-        return new Expense(amountString, description, dateString);
+        return new Expense(uid, amountString, description, dateString);
     }
 
     //Getter and Setter
@@ -116,6 +123,5 @@ public class Expense implements Serializable{
         this.date = date;
     }
     //
-
 
 }

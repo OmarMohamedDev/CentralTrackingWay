@@ -25,6 +25,7 @@ public class Constants {
      */
     public static class Type{
         public static final String TYPE_EXPENSE = "EXPENSE";
+        public static final String TYPE_UID = "UID";
     }
 
     /**
@@ -32,7 +33,7 @@ public class Constants {
      */
     public static class Patterns{
         public static final String DATE_FORMAT = "d/M/yyyy";
-        public static final String REMOVE_CURRENCIES_SYMBOLS = "[^0-9.,]+";
+        public static final String REMOVE_CURRENCIES_SYMBOLS = "[^0-9.]+";
     }
 
     /**

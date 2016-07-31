@@ -130,7 +130,7 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
                 if(view.getId() == R.id.btn_delete_expense){
                     myRef.child(userUID)
                             .child(Constants.DBNodes.EXPENSES)
-                            .child(mExpense.getUid().toString())
+                            .child(mExpense.getUid())
                             .removeValue();
 
                 } else {
@@ -145,12 +145,15 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
                     Date date = Utilities.fromStringToDate(mDateField.getText().toString());
 
                     if(view.getId() == R.id.btn_add_expense) {
-                        mExpense = Expense.generateExpense(amount, description, date);
+                        mExpense = Expense.generateExpense(myRef.push().getKey(), amount, description, date);
+
+                    } else {
+                        mExpense = Expense.generateExpense(mExpense.getUid(), amount, description, date);
                     }
 
                     myRef.child(userUID)
                             .child(Constants.DBNodes.EXPENSES)
-                            .child(mExpense.getUid().toString())
+                            .child(mExpense.getUid())
                             .setValue(mExpense);
 
 

@@ -201,7 +201,7 @@ public abstract class ExpenseFirebaseAdapter<T, VH extends RecyclerView.ViewHold
      * @param view Cardview that contains the data that we want to manipulate
      * @return an Expense object
      */
-    private static Expense createExpenseFromCardview(View view){
+    private static Expense createExpenseFromCardview(View view, String uid){
         //We get just the description string
         String description = ((TextView)view
                 .findViewById(R.id.expense_description_text_view))
@@ -217,7 +217,7 @@ public abstract class ExpenseFirebaseAdapter<T, VH extends RecyclerView.ViewHold
                 .getText().toString());
         //
 
-        return Expense.generateExpense(amount, description, date);
+        return Expense.generateExpense(uid, amount, description, date);
     }
 
     /**
@@ -239,6 +239,7 @@ public abstract class ExpenseFirebaseAdapter<T, VH extends RecyclerView.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public View mCardView;
+        public String mExpenseUID;
         public TextView mExpenseDescription;
         public TextView mExpenseAmount;
         public TextView mExpenseDate;
@@ -255,11 +256,12 @@ public abstract class ExpenseFirebaseAdapter<T, VH extends RecyclerView.ViewHold
                             .replace(R.id.core_fragment_container,
                                     ManipulateExpenseFragment
                                             .newInstance(Constants.CRUDOperations.EDIT_EXPENSE,
-                                                    createExpenseFromCardview(view)))
+                                                    createExpenseFromCardview(view, mExpenseUID)))
                             .commit();
                 }
             });
             mCardView = v;
+            mExpenseUID = "";
             mExpenseDescription = (TextView) mCardView.findViewById(R.id.expense_description_text_view);
             mExpenseAmount = (TextView) mCardView.findViewById(R.id.expense_amount_text_view);
             mExpenseDate = (TextView) mCardView.findViewById(R.id.expense_date_text_view);

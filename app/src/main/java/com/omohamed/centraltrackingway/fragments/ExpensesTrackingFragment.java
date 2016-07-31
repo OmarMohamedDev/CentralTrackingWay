@@ -120,22 +120,24 @@ public class ExpensesTrackingFragment extends Fragment {
         ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder> recyclerViewAdapter = new ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder>(Expense.class, R.layout.card_view_expense, ExpenseFirebaseAdapter.ViewHolder.class,  myRef) {
             @Override
             protected void populateViewHolder(ViewHolder viewHolder, Expense model, int position) {
+                String uid = model.getUid();
                 String description = model.getDescription();
                 String amount = model.getAmount();
                 String date = model.getDate();
 
+                viewHolder.mExpenseUID = uid;
                 viewHolder.mExpenseDescription.setText(description);
                 viewHolder.mExpenseAmount.setText(amount);
                 viewHolder.mExpenseDate.setText(date);
             }
         } ;
-        recyclerViewAdapter.notifyDataSetChanged();
+       // recyclerViewAdapter.notifyDataSetChanged();
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(recyclerViewAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        recyclerViewAdapter.notifyDataSetChanged();
+       // recyclerViewAdapter.notifyDataSetChanged();
 
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
