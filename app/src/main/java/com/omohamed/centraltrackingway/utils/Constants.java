@@ -43,6 +43,7 @@ public class Constants {
     public class DBNodes{
         public static final String USERS = "users";
         public static final String EXPENSES = "expenses";
+        public static final String CREATION_DATE = "creationDate";
     }
 
 }

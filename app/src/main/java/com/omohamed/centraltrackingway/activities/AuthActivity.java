@@ -14,10 +14,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.omohamed.centraltrackingway.R;
 import com.omohamed.centraltrackingway.fragments.ResetPasswordFragment;
 import com.omohamed.centraltrackingway.fragments.SigninFragment;
-import com.omohamed.centraltrackingway.fragments.SignupFragment;
 
 public class AuthActivity extends AppCompatActivity implements SigninFragment.OnFragmentInteractionListener,
-                                                                SignupFragment.OnFragmentInteractionListener,
                                                                 ResetPasswordFragment.OnFragmentInteractionListener{
 
     private FirebaseAuth mAuth;

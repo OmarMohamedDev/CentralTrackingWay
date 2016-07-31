@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.omohamed.centraltrackingway.R;
@@ -94,13 +95,15 @@ public class ExpensesTrackingFragment extends Fragment {
         //Look at instant database
         //Setting up the connection with the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String userUID = "";
+        String userUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         DatabaseReference myRef = database.getReference(Constants.DBNodes.USERS)
                 .child(userUID)
                 .child(Constants.DBNodes.EXPENSES);
 
-        ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder> recyclerViewAdapter = new ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder>(Expense.class, R.layout.card_view_expense, ExpenseFirebaseAdapter.ViewHolder.class,  myRef) {
+        ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder> recyclerViewAdapter =
+                new ExpenseFirebaseAdapter<Expense, ExpenseFirebaseAdapter.ViewHolder>(Expense.class, R.layout.card_view_expense,
+                                                ExpenseFirebaseAdapter.ViewHolder.class,  myRef) {
             @Override
             protected void populateViewHolder(ViewHolder viewHolder, Expense model, int position) {
                 String uid = model.getUid();

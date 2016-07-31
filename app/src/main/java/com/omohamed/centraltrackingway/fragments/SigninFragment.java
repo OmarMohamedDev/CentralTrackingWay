@@ -102,7 +102,7 @@ public class SigninFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .addToBackStack(null)
                         .setCustomAnimations(fade_in, fade_out)
-                        .replace(R.id.auth_fragment_container, SignupFragment.newInstance("",""))
+                        .replace(R.id.auth_fragment_container, SignupFragment.newInstance())
                         .commit();
             }
         });

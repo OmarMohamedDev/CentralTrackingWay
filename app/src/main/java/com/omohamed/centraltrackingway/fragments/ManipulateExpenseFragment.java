@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.omohamed.centraltrackingway.R;
@@ -130,7 +131,7 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
                 //Setting up the connection with the database
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference(Constants.DBNodes.USERS);
-                String userUID = "";
+                String userUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                 if(view.getId() == R.id.btn_delete_expense){
                     myRef.child(userUID)
