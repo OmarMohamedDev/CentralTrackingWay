@@ -28,6 +28,11 @@ import static android.R.anim.fade_out;
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHolder> {
     private ArrayList<Expense> mDataset;
 
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public ExpensesAdapter(ArrayList<Expense> myDataset) {
+        mDataset = myDataset;
+    }
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -86,11 +91,6 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
         return Expense.generateExpense(amount, description, date);
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public ExpensesAdapter(ArrayList<Expense> myDataset) {
-        mDataset = myDataset;
-    }
-
     // Create new views (invoked by the layout manager)
     @Override
     public ExpensesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -107,8 +107,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String description = mDataset.get(position).getDescription();
-        String amount = Utilities.formatAmount(mDataset.get(position).getAmount());
-        String date = Utilities.formatDate(mDataset.get(position).getDate());
+        String amount = mDataset.get(position).getAmount();
+        String date = mDataset.get(position).getDate();
 
         holder.mExpenseDescription.setText(description);
         holder.mExpenseAmount.setText(amount);

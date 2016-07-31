@@ -7,10 +7,14 @@ package com.omohamed.centraltrackingway.utils;
 
 public class Constants {
 
+    private Constants(){
+        //Private constructor for non-instantiable class
+    }
+
     /**
      * Constants used to indicate which type of operation we need to execute
      */
-    public class CRUDOperations{
+    public static class CRUDOperations{
         public static final String ADD_EXPENSE = "ADD_EXPENSE";
         public static final String EDIT_EXPENSE = "EDIT_EXPENSE";
         public static final String DELETE_EXPENSE = "DELETE_EXPENSE";
@@ -19,16 +23,24 @@ public class Constants {
     /**
      * Constants used to indicate a type of data
      */
-    public class Type{
+    public static class Type{
         public static final String TYPE_EXPENSE = "EXPENSE";
     }
 
     /**
      * Constants used to define date patterns, regular expression, etc.
      */
-    public class Patterns{
-        public static final String DATE_FORMAT = "dd-MM-yyyy";
+    public static class Patterns{
+        public static final String DATE_FORMAT = "d/M/yyyy";
         public static final String REMOVE_CURRENCIES_SYMBOLS = "[^0-9.,]+";
+    }
+
+    /**
+     * Constants used to identify the nodes of the NoSQL db
+     */
+    public class DBNodes{
+        public static final String USERS = "users";
+        public static final String EXPENSES = "expenses";
     }
 
 }

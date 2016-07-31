@@ -1,5 +1,7 @@
 package com.omohamed.centraltrackingway.models;
 
+import com.omohamed.centraltrackingway.utils.Utilities;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -7,14 +9,23 @@ import java.util.Date;
 
 /**
  * POJO class that represent an Expense object
+ * NOTE: For some fields we use strings instead of the appropriate types (BigDecimal for amount
+ * or Date for date, for example) just because Firebase doesn't support this types, but
+ * in the app logic this types are used in order to manipulate properly the values.
  * Created by omarmohamed on 30/07/2016.
  */
 
 public class Expense implements Serializable{
+
+    /**
+     * Unique identifier for an expense instance
+     */
+    private String uid;
+
     /**
      * Amount of the expense
      */
-    private BigDecimal amount;
+    private String amount;
 
     /**
      * Description of the expense
@@ -24,17 +35,18 @@ public class Expense implements Serializable{
     /**
      * Date of the expense (if the expense occurs in several days, it is the first day of the period)
      */
-    private Date date;
+    private String date;
 
     /**
      * Private Constructor without parameters called by the factory method
      * and initialized with default values
      */
     private Expense(){
-        this.amount = new BigDecimal("0");
+        this.uid = java.util.UUID.randomUUID().toString();
+        this.amount = "0";
         this.description = "Description not available";
         //Today's date
-        this.date = Calendar.getInstance().getTime();
+        this.date = Utilities.formatDate(Calendar.getInstance().getTime());
     }
 
     /**
@@ -43,7 +55,8 @@ public class Expense implements Serializable{
      * @param description description of the expense
      * @param date date of the expense
      */
-    private Expense(BigDecimal amount, String description, Date date){
+    private Expense(String amount, String description, String date){
+        this.uid = java.util.UUID.randomUUID().toString();
         this.amount = amount;
         this.description = description;
         this.date = date;
@@ -65,15 +78,25 @@ public class Expense implements Serializable{
      * @return a new Expense object initialized with the passed parameters
      */
     public static Expense generateExpense(BigDecimal amount, String description, Date date){
-        return new Expense(amount, description, date);
+        String amountString = Utilities.formatAmount(amount);
+        String dateString = Utilities.formatDate(date);
+        return new Expense(amountString, description, dateString);
     }
 
     //Getter and Setter
-    public BigDecimal getAmount() {
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -85,11 +108,11 @@ public class Expense implements Serializable{
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
     //

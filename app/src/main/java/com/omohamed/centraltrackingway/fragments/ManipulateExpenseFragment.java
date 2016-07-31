@@ -1,22 +1,22 @@
 package com.omohamed.centraltrackingway.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.omohamed.centraltrackingway.R;
+import com.omohamed.centraltrackingway.activities.AuthActivity;
 import com.omohamed.centraltrackingway.models.Expense;
 import com.omohamed.centraltrackingway.utils.Constants;
 import com.omohamed.centraltrackingway.utils.Utilities;
@@ -111,57 +111,49 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
             @Override
             public void onClick(View view) {
                 //Setting up the connection with the database
-                // Write a message to the database
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("message");
+                DatabaseReference myRef = database.getReference(Constants.DBNodes.USERS);
+                String userUID = "";
 
-                // Read from the database
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // This method is called once with the initial value and again
-                        // whenever data at this location is updated.
-                        String value = dataSnapshot.getValue(String.class);
-                        Log.d(ManipulateExpenseFragment.class.getSimpleName(), "Value is: " + value);
-                    }
+                //Check on the user: if slogged, request auth, get the email otherwise
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    // Name and email
+                    userUID= user.getUid();
+                } else {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(getActivity(), AuthActivity.class));
+                    getActivity().finish();
+                }
 
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed to read value
-                        Log.w(ManipulateExpenseFragment.class.getSimpleName(), "Failed to read value.", error.toException());
-                    }
-                });
+                if(view.getId() == R.id.btn_delete_expense){
+                    myRef.child(userUID)
+                            .child(Constants.DBNodes.EXPENSES)
+                            .child(mExpense.getUid().toString())
+                            .removeValue();
 
-                String description = ((EditText)view
-                        .findViewById(R.id.edit_text_description))
-                        .getText().toString();
+                } else {
 
-                //We transform it in a String, remove the currencies symbols, transform it in BigDecimal and than round it
-                BigDecimal amount = new BigDecimal(((EditText)view
-                        .findViewById(R.id.edit_text_amount))
-                        .getText().toString().replaceAll(Constants.Patterns.REMOVE_CURRENCIES_SYMBOLS,""));
+                    String description = mDescription.getText().toString();
 
-                //We get the date string, format it following a pattern in utilities and than return the date object
-                Date date = Utilities.fromStringToDate(((EditText)view.findViewById(R.id.edit_text_date))
-                        .getText().toString());
+                    //We transform it in a String, remove the currencies symbols, transform it in BigDecimal
+                    BigDecimal amount = new BigDecimal(mAmount.getText().toString()
+                            .replaceAll(Constants.Patterns.REMOVE_CURRENCIES_SYMBOLS, ""));
 
-                switch(view.getId()){
-                    case R.id.btn_add_expense:
+                    //We get the date string, format it following a pattern in utilities and than return the date object
+                    Date date = Utilities.fromStringToDate(mDateField.getText().toString());
+
+                    if(view.getId() == R.id.btn_add_expense) {
                         mExpense = Expense.generateExpense(amount, description, date);
-                        //TODO: Edit the data in local and on the server to add expense
+                    }
 
-                        break;
+                    myRef.child(userUID)
+                            .child(Constants.DBNodes.EXPENSES)
+                            .child(mExpense.getUid().toString())
+                            .setValue(mExpense);
 
-                    case R.id.btn_edit_expense:
-                        //TODO: Edit the data in local and on the server to edit expense
-                        break;
 
-                    case R.id.btn_delete_expense:
-                        //TODO: Delete the data in local and on the server
-                        break;
-
-                    default:
-                        break;
                 }
 
                 //Go back to the previous activity
