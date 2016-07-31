@@ -10,9 +10,12 @@ import com.omohamed.centraltrackingway.R;
 import com.omohamed.centraltrackingway.activities.MainActivity;
 import com.omohamed.centraltrackingway.fragments.ManipulateExpenseFragment;
 import com.omohamed.centraltrackingway.models.Expense;
-import com.omohamed.centraltrackingway.utils.Util;
+import com.omohamed.centraltrackingway.utils.Constants;
+import com.omohamed.centraltrackingway.utils.Utilities;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static android.R.anim.fade_in;
 import static android.R.anim.fade_out;
@@ -44,7 +47,10 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
                     ((MainActivity)view.getContext()).getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(fade_in, fade_out)
                             .addToBackStack(null)
-                            .replace(R.id.core_fragment_container, ManipulateExpenseFragment.newInstance("",""))
+                            .replace(R.id.core_fragment_container,
+                                    ManipulateExpenseFragment
+                                            .newInstance(Constants.CRUDOperations.EDIT_EXPENSE,
+                                                    createExpenseFromCardview(view)))
                             .commit();
                 }
             });
@@ -53,6 +59,31 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
             mExpenseAmount = (TextView) mCardView.findViewById(R.id.expense_amount_text_view);
             mExpenseDate = (TextView) mCardView.findViewById(R.id.expense_date_text_view);
         }
+    }
+
+    /**
+     * Method that get in input a cardview, extract the data from the fields and create
+     * the relative Expense object representation
+     * @param view Cardview that contains the data that we want to manipulate
+     * @return an Expense object
+     */
+    private static Expense createExpenseFromCardview(View view){
+        //We get just the description string
+        String description = ((TextView)view
+                                    .findViewById(R.id.expense_description_text_view))
+                                        .getText().toString();
+
+        //We transform it in a String, remove the currencies symbols, transform it in BigDecimal and than round it
+        BigDecimal amount = new BigDecimal(((TextView)view
+                                                .findViewById(R.id.expense_amount_text_view))
+                                                    .getText().toString().replaceAll(Constants.Patterns.REMOVE_CURRENCIES_SYMBOLS,""));
+
+        //We get the date string, format it following a pattern in utilities and than return the date object
+        Date date = Utilities.fromStringToDate(((TextView)view.findViewById(R.id.expense_date_text_view))
+                                                                        .getText().toString());
+        //
+
+        return Expense.generateExpense(amount, description, date);
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -76,8 +107,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String description = mDataset.get(position).getDescription();
-        String amount = Util.formatAmount(mDataset.get(position).getAmount());
-        String date = Util.formatDate(mDataset.get(position).getDate());
+        String amount = Utilities.formatAmount(mDataset.get(position).getAmount());
+        String date = Utilities.formatDate(mDataset.get(position).getDate());
 
         holder.mExpenseDescription.setText(description);
         holder.mExpenseAmount.setText(amount);

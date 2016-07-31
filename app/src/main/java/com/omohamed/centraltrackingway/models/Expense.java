@@ -1,5 +1,6 @@
 package com.omohamed.centraltrackingway.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Date;
  * Created by omarmohamed on 30/07/2016.
  */
 
-public class Expense {
+public class Expense implements Serializable{
     /**
      * Amount of the expense
      */
@@ -42,8 +43,8 @@ public class Expense {
      * @param description description of the expense
      * @param date date of the expense
      */
-    private Expense(String amount, String description, Date date){
-        this.amount = new BigDecimal(amount);
+    private Expense(BigDecimal amount, String description, Date date){
+        this.amount = amount;
         this.description = description;
         this.date = date;
     }
@@ -63,7 +64,7 @@ public class Expense {
      * @param date date of the expense
      * @return a new Expense object initialized with the passed parameters
      */
-    public static Expense generateExpense(String amount, String description, Date date){
+    public static Expense generateExpense(BigDecimal amount, String description, Date date){
         return new Expense(amount, description, date);
     }
 
@@ -92,4 +93,6 @@ public class Expense {
         this.date = date;
     }
     //
+
+
 }

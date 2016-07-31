@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.omohamed.centraltrackingway.R;
 import com.omohamed.centraltrackingway.models.Expense;
+import com.omohamed.centraltrackingway.utils.Constants;
 import com.omohamed.centraltrackingway.views.adapters.ExpensesAdapter;
 
 import java.util.ArrayList;
@@ -102,7 +103,9 @@ public class ExpensesTrackingFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(fade_in, fade_out)
                         .addToBackStack(null)
-                        .replace(R.id.core_fragment_container, ManipulateExpenseFragment.newInstance("",""))
+                        .replace(R.id.core_fragment_container,
+                                 ManipulateExpenseFragment
+                                         .newInstance(Constants.CRUDOperations.ADD_EXPENSE, null))
                         .commit();
             }
         });
