@@ -44,6 +44,8 @@ public class Constants {
         public static final String USERS = "users";
         public static final String EXPENSES = "expenses";
         public static final String CREATION_DATE = "creationDate";
+        public static final String EMAIL = "email";
+        public static final String PASSWORD = "password";
     }
 
 }

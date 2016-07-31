@@ -136,7 +136,7 @@ public class SignupFragment extends Fragment {
                                     //object, so are available in any moment
                                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                                     DatabaseReference myRef = database.getReference();
-                                    //myRef.child(Constants.DBNodes.USERS).setValue(auth.getCurrentUser().getUid());
+                                    // myRef.child(Constants.DBNodes.USERS).setValue(auth.getCurrentUser().getUid());
                                     //Adding creationg date
                                     myRef.child(Constants.DBNodes.USERS).child(auth.getCurrentUser().getUid())
                                             .child(Constants.DBNodes.CREATION_DATE)
