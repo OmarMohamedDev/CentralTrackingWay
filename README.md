@@ -14,3 +14,4 @@ Android App that permit to track expenses using Firebase 3.+ functionalities and
 - Permit to group expenses for date/category
 - Permit to order the expense for a certain criteria
 - Permit to search between the expenses
+- Add instrumentation tests
