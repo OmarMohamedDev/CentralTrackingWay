@@ -9,6 +9,7 @@ import org.junit.Test;
  * Created by omarmohamed on 1/08/2016.
  */
 public class UtilitiesTest {
+
     @Before
     public void setUp() throws Exception {
 

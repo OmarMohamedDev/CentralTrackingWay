@@ -1,11 +1,13 @@
 package com.omohamed.centraltrackingway.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -211,6 +213,10 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
                                 .child(mExpense.getUid())
                                 .setValue(mExpense);
 
+                        //Making disappear the keyboard
+                        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        mgr.hideSoftInputFromWindow(mDescriptionEditText.getWindowToken(), 0);
+
                         //Go back to the previous activity
                         getActivity().getSupportFragmentManager().popBackStack();
 
@@ -259,6 +265,9 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
         mAddButton.setOnClickListener(crudButtonsOnClickListener);
         mEditButton.setOnClickListener(crudButtonsOnClickListener);
         mDeleteButton.setOnClickListener(crudButtonsOnClickListener);
+
+        //Focusing the first field
+        mDescriptionEditText.requestFocus();
 
         return view;
     }

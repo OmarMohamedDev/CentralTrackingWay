@@ -164,6 +164,7 @@ public class SigninFragment extends Fragment {
                                     }
                                 } else {
                                     //Signin successful, redirecting to the core activity
+
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
@@ -172,6 +173,10 @@ public class SigninFragment extends Fragment {
                         });
             }
         });
+
+        //Focusing the first field
+        mInputEmail.requestFocus();
+
 
         return view;
     }

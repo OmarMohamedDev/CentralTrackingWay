@@ -55,7 +55,7 @@
     <string name="title_edit_expense">Edit an expense</string>
     <string name="delete_expense">Delete expense</string>
     <string name="add_expense">Add expense</string>
-    <string name="edit_expense">Edit expense</string>
+    <string name="edit_expense">Save edits</string>
     <string name="fill_all_the_fields">Please, fill out properly all the required fields</string>
 
 </resources>
