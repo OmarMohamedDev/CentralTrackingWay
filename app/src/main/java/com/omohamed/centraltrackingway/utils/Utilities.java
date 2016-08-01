@@ -37,6 +37,7 @@ public class Utilities {
      * @return string with the representation of the date
      */
     public static String formatDate(Date date){
+        if (date == null) return null;
         return new SimpleDateFormat(Constants.Patterns.DATE_FORMAT).format(date);
     }
 
@@ -46,6 +47,8 @@ public class Utilities {
      * @return date object that represent the one passed as string
      */
     public static Date fromStringToDate(String dateString){
+        if (dateString.isEmpty() || dateString == null) return null;
+
         Date date = null;
 
         try{
