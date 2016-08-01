@@ -2,19 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.omohamed.centraltrackingway.fragments.ManipulateExpenseFragment">
     <LinearLayout
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:padding="@dimen/activity_horizontal_margin">
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/edit_text_description"
@@ -24,15 +23,12 @@
                 android:hint="@string/hint_description"
                 android:inputType="text"
                 android:maxLines="1"
-                android:maxLength="25"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black" />
+                android:maxLength="25" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/edit_text_amount"
@@ -41,17 +37,13 @@
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_amount"
                 android:maxLength="25"
-                android:inputType="numberDecimal"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"  />
+                android:inputType="numberDecimal"/>
         </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            app:hintTextAppearance="@style/TextAppearance.AppCompat">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/edit_text_date"
@@ -59,9 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_date"
-                android:maxLength="10"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"  />
+                android:maxLength="10"/>
         </android.support.design.widget.TextInputLayout>
 
         <Button
@@ -69,27 +59,25 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:text="@string/add_expense"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/colorPrimaryLight" />
 
         <Button
             android:id="@+id/btn_edit_expense"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/colorPrimary"
-            android:text="@string/edit_expense"
-            android:textColor="@android:color/black" />
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/edit_expense" />
 
         <Button
             android:id="@+id/btn_delete_expense"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@color/errorColor"
-            android:text="@string/delete_expense"
-            android:textColor="@android:color/black" />
+            android:background="@color/colorAccent"
+            android:text="@string/delete_expense" />
 
     </LinearLayout>
 

@@ -13,6 +13,13 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="@dimen/size_header"/>
 
         <ImageView
             android:contentDescription="@string/icon"
@@ -33,7 +40,7 @@
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorAccent" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +58,7 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorAccent" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -86,7 +93,7 @@
             android:background="@null"
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/colorIcons"
             android:textSize="15sp" />
     </LinearLayout>
 

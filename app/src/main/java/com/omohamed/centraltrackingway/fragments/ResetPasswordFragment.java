@@ -112,7 +112,7 @@ public class ResetPasswordFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getActivity(), getString(R.string.instrunctions_reset_password_sent), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.instructions_reset_password_sent), Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(getActivity(), getString(R.string.reset_password_failed), Toast.LENGTH_SHORT).show();
                                 }

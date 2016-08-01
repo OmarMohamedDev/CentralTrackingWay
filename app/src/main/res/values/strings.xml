@@ -10,7 +10,7 @@
 
     <!-- Authentication Strings -->
     <string name="reset_password_failed">Failed to send reset email!</string>
-    <string name="instrunctions_reset_password_sent">We have sent you instructions to reset your password!</string>
+    <string name="instructions_reset_password_sent">We have sent you instructions to reset your password!</string>
     <string name="enter_registered_email">Enter your registered email id</string>
     <string name="enter_email">Enter email address!</string>
     <string name="enter_password">Enter password!</string>
@@ -57,8 +57,5 @@
     <string name="add_expense">Add expense</string>
     <string name="edit_expense">Edit expense</string>
     <string name="fill_all_the_fields">Please, fill out properly all the required fields</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

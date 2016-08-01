@@ -9,4 +9,5 @@
     <dimen name="logo_w_h">100dp</dimen>
     <!-- App standard dimensions -->
     <dimen name="padding_text">10dp</dimen>
+    <dimen name="size_header">20dp</dimen>
 </resources>
