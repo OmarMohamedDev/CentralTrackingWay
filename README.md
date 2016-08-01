@@ -1,6 +1,10 @@
 # CentralTrackingWay
 Android App that permit to track expenses using Firebase 3.+ functionalities and following Material Design guidelines
 
+## How to use the app
+Signup a new account or login if you already created it, click to the floating action button with the plus to add a new expense or
+click on already created expense to edit (is possible pick up a date double clicking on the date field) or edit it.
+
 ## Possible improvements
 - add back button instead of navigation drawer open menu in the top left of the manipulate expense view
 - Add progress bar when we retrieve data / send data from / to Firebase to give visual feedback to the user
