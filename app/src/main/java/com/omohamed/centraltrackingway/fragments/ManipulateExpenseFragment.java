@@ -145,7 +145,6 @@ public class ManipulateExpenseFragment extends Fragment implements DatePickerDia
             mDateEditText.setText(mExpense.getDate());
         }
 
-        //TODO: Fix the problem that we have to click twice on the edit text in order to call the picker dialog
         mDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

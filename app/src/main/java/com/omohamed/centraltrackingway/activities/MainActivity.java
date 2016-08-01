@@ -17,6 +17,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.omohamed.centraltrackingway.R;
 import com.omohamed.centraltrackingway.fragments.ExpensesTrackingFragment;
 
+import static android.R.anim.fade_in;
+import static android.R.anim.fade_out;
+
 /**
  * Fragment that is used as container for the fragments that manage the core functionality of the app
  *
@@ -116,9 +119,16 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        //Going to the expense list view
         if (id == R.id.nav_expenses) {
-            //TODO: Handle the expense action
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(fade_in, fade_out)
+                    .replace(R.id.core_fragment_container,
+                            ExpensesTrackingFragment
+                                    .newInstance())
+                    .commit();
         }
+        //Signing out
         else if (id == R.id.nav_sign_out) {
             signOut();
         }
