@@ -1,7 +1,5 @@
 package com.omohamed.centraltrackingway.utils;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -9,16 +7,6 @@ import org.junit.Test;
  * Created by omarmohamed on 1/08/2016.
  */
 public class UtilitiesTest {
-
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
 
     @Test
     public void formatAmountNullValue() throws Exception {
